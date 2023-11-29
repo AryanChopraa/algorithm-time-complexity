@@ -13,6 +13,12 @@ const App = () => {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState('selectionSort');
   const [sortedArray, setSortedArray] = useState([]);
   const [timeTaken, setTimeTaken] = useState(0);
+  const [comparisons, setComparisons] = useState(0);
+  const [swaps, setSwaps] = useState(0);
+  const [algorithmUsed, setAlgorithmUsed] = useState('');
+  const [explanation, setExplanation] = useState('');
+  const [bestCaseTime, setBestCaseTime] = useState('');
+  const [worstCaseTime, setWorstCaseTime] = useState('');
 
   const handleArrayInputChange = (e) => {
     const input = e.target.value;
@@ -27,42 +33,46 @@ const App = () => {
   const handleSortClick = () => {
     const startTime = performance.now();
 
-    let newArray;
+    let result;
     switch (selectedAlgorithm) {
       case 'selectionSort':
-        newArray = selectionSort([...inputArray]);
+        result = selectionSort([...inputArray]);
         break;
       case 'bubbleSort':
-        newArray = bubbleSort([...inputArray]);
+        result = bubbleSort([...inputArray]);
         break;
       case 'insertionSort':
-        newArray = insertionSort([...inputArray]);
+        result = insertionSort([...inputArray]);
         break;
       case 'mergeSort':
-        newArray = mergeSort([...inputArray]);
+        result = mergeSort([...inputArray]);
         break;
       case 'quickSort':
-        newArray = quickSort([...inputArray]);
+        result = quickSort([...inputArray]);
         break;
       case 'heapSort':
-        newArray = heapSort([...inputArray]);
+        result = heapSort([...inputArray]);
+  
         break;
       default:
-        newArray = [...inputArray];
+        result = { sortedArray: [...inputArray], algorithm: 'No Sorting' };
     }
 
-    // Use requestAnimationFrame to ensure that the time is measured after the rendering is complete.
-    requestAnimationFrame(() => {
-      const endTime = performance.now();
-      setSortedArray(newArray);
-      setTimeTaken(endTime - startTime);
-    });
+    const endTime = performance.now();
+    setSortedArray(result.sortedArray);
+    setTimeTaken(endTime - startTime);
+    setComparisons(result.comparisons || 0);
+    setSwaps(result.swaps || 0);
+    setAlgorithmUsed(result.algorithm || '');
+    setExplanation(result.explanation);
+    setBestCaseTime(result.bestCaseTime);
+    setWorstCaseTime(result.worstCaseTime);
   };
 
   return (
     <div className="bg-gray-100 min-h-screen flex items-center justify-center">
       <div className="container mx-auto p-6 bg-white rounded-lg shadow-lg">
-        <h1 className="text-4xl font-extrabold text-blue-500 mb-8">Sorting</h1>
+        <h1 className="text-4xl font-extrabold text-blue-500 mb-8">Types of Sorting</h1>
 
         {/* Step 1: Input */}
         <div className="mb-6">
@@ -97,7 +107,7 @@ const App = () => {
           className="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600"
           onClick={handleSortClick}
         >
-          Step 3: Sort
+        Sort
         </button>
 
         <div className="mt-8">
@@ -107,8 +117,25 @@ const App = () => {
 
         <div className="mt-4">
           <h2 className="text-xl font-semibold mb-2">Time Taken:</h2>
-          <p className="text-gray-800">{timeTaken.toFixed(8)} milliseconds</p>
+          <p className="text-gray-800">{timeTaken.toFixed(10)} milliseconds</p>
         </div>
+
+        {algorithmUsed && (
+          <div className="mt-4">
+            <h2 className="text-xl font-semibold">Sorting Algorithm Used:</h2>
+            <p className="text-gray-800">{algorithmUsed}</p>
+            <h2 className="text-xl font-semibold mt-4">Comparisons: </h2>
+            <p className="text-gray-800">{comparisons}</p>
+            <h2 className="text-xl font-semibold mt-4">Swaps: </h2>
+            <p className="text-gray-800">{swaps}</p>
+            <h2 className="text-xl font-semibold mt-4">Explanation:</h2>
+            <p className="text-gray-800">{explanation}</p>
+            <h2 className="text-xl font-semibold mt-4">Best Case Time Complexity:</h2>
+            <p className="text-gray-800">{bestCaseTime}</p>
+            <h2 className="text-xl font-semibold mt-4">Worst Case Time Complexity:</h2>
+            <p className="text-gray-800">{worstCaseTime}</p>
+          </div>
+        )}
       </div>
     </div>
   );

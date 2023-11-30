@@ -170,8 +170,13 @@ const swap = (arr, i, j) => {
   
     return internalQuickSort(arr, 0, 0);
   };
-  
   export const heapSort = (arr) => {
+    const swap = (arr, i, j) => {
+      const temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
+    };
+  
     const heapify = (arr, n, i, comparisons, swaps) => {
       let largest = i;
       const left = 2 * i + 1;
@@ -213,7 +218,7 @@ const swap = (arr, i, j) => {
     const n = arr.length;
     let comparisons = 0;
     let swaps = 0;
-    const { comparisons: heapifyComparisons, swaps: heapifySwaps } = buildMaxHeap(arr, comparisons, swaps);
+    let { comparisons: heapifyComparisons, swaps: heapifySwaps } = buildMaxHeap(arr, comparisons, swaps);
   
     for (let i = n - 1; i > 0; i--) {
       swap(arr, 0, i);

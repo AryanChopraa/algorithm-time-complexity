@@ -52,7 +52,6 @@ const App = () => {
         break;
       case 'heapSort':
         result = heapSort([...inputArray]);
-  
         break;
       default:
         result = { sortedArray: [...inputArray], algorithm: 'No Sorting' };
